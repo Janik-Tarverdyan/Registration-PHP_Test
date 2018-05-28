@@ -1,0 +1,33 @@
+# Workstation
+.vscode/
+.idea/
+
+
+# Database SqLite
+database*
+
+
+# TMP
+Tmp*/
+Tmp*/*
+tmp*/
+tmp*/*
+.Tmp*/
+.Tmp*/*
+.tmp*/
+.tmp*/*
+
+
+# Tests
+Test*/
+Test*/*
+test*/
+test*/*
+
+
+# Composer
+vendor
+
+
+# Configuration
+.env*
