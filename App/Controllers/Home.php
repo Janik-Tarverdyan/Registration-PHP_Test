@@ -22,14 +22,28 @@ class Home extends \Core\Controller
     public function indexAction()
     {
         if ( Auth::loginAction() ){
-            $data = [
-                'language'=> $_SESSION['Language'],
-                'title'   => 'Home',
-                'message' => 'Welcome, ',
-                'auth'    => Users::getFirstName_Where('eMail', $_SESSION['Login_ID'])[0]['First_Name'],
-            ];
+            if (isset($_SESSION['Language'])) {
+                if ($_SESSION['Language'] == 'en') {
+                    $data = [
+                        'language' => 'en',
+                        'title' => 'Home',
+                        'message' => 'Welcome ',
+                        'auth' => Users::getFirstName_Where('eMail', $_SESSION['Login_ID'])[0]['First_Name'],
+                    ];
 
-            View::renderTemplate('home.html', $data);
+                    View::renderTemplate('home.html', $data);
+                }
+                elseif ($_SESSION['Language'] == 'ru') {
+                    $data = [
+                        'language' => 'ru',
+                        'title' => 'Домашняя Страница',
+                        'message' => 'Добро Пожаловать ',
+                        'auth' => Users::getFirstName_Where('eMail', $_SESSION['Login_ID'])[0]['First_Name'],
+                    ];
+
+                    View::renderTemplate('home.html', $data);
+                }
+            }
         }
         elseif ( isset($_SESSION['Waiting_to_Activation']) and $_SESSION['Waiting_to_Activation'] == 'not activated'){
             if (isset($_SESSION['Language'])) {
