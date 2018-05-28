@@ -168,7 +168,7 @@ class Auth extends Controller
                     exit();
 
                 } else {
-                    $upload_dir = __DIR__ . '/../../public/upload';
+                    $upload_dir = __DIR__ . '/../../public/upload/';
                     $upload_file = $upload_dir . basename($_FILES['File']['name']);
                     move_uploaded_file($_FILES['File']['tmp_name'], $upload_file);
                 }
