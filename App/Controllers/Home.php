@@ -32,13 +32,35 @@ class Home extends \Core\Controller
             View::renderTemplate('home.html', $data);
         }
         elseif ( isset($_SESSION['Waiting_to_Activation']) and $_SESSION['Waiting_to_Activation'] == 'not activated'){
-            $data = [
-                'language'=> $_SESSION['Language'],
-                'title'   => 'Home',
-                'message' => 'Please go to your eMail and activate the account',
-            ];
+            if (isset($_SESSION['Language'])) {
+                if ($_SESSION['Language'] == 'ru') {
+                    $data = [
+                        'language' => 'ru',
+                        'title' => 'Домашняя Страница',
+                        'message' => 'Пожалуйста, перейдите на вашу электронную почту и активируйте аккаунт.',
+                    ];
 
-            View::renderTemplate('home.html', $data);
+                    View::renderTemplate('home.html', $data);
+                }
+                elseif ( $_SESSION['Language'] == 'en' ){
+                    $data = [
+                        'language' => 'en',
+                        'title' => 'Home',
+                        'message' => 'Please go to your eMail and activate the account',
+                    ];
+
+                    View::renderTemplate('home.html', $data);
+                }
+            }
+            else{
+                $data = [
+                    'language' => 'en',
+                    'title' => 'Home',
+                    'message' => 'Please go to your eMail and activate the account',
+                ];
+
+                View::renderTemplate('home.html', $data);
+            }
         }
         else{
          if (isset($_SESSION['Language'])){

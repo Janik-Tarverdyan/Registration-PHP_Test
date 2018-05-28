@@ -108,20 +108,42 @@ class Auth extends Controller
     public function activateAction(){
 
         if ( isset($_GET['activation_key']) and $_GET['activation_key'] == Users::getActivationKey($_GET['activation_key'])[0]['Activation_Key']  ){
-            $data = [
-                'auth' => "You is an auth",
-                'message' => "Your account is activated",
-                'home' => "Go to home",
-            ];
-            Users::UpdateStatus($_GET['activation_key']);
+            if (isset($_SESSION['Language'])){
+                if ($_SESSION['Language'] == 'en') {
+                    $data = [
+                        'language' => 'en',
+                        'auth' => "You is an auth",
+                        'message' => "Your account is activated",
+                        'home' => "Go to home",
+                    ];
 
-            $_SESSION['Login_ID'] = Users::getUser_eMail_Where('Activation_Key', $_GET['activation_key'])[0]['eMail'];
+                    Users::UpdateStatus($_GET['activation_key']);
+
+                    $_SESSION['Login_ID'] = Users::getUser_eMail_Where('Activation_Key', $_GET['activation_key'])[0]['eMail'];
 
 
-            View::renderTemplate('activation.html', $data);
+                    View::renderTemplate('activation.html', $data);
+                }
+                if ($_SESSION['Language'] == 'ru') {
+                    $data = [
+                        'language' => 'ru',
+                        'auth' => "Поздравляем, вы авторизованы",
+                        'message' => "Ваша аккаунт активирован.",
+                        'home' => "Перейти на главную",
+                    ];
+
+                    Users::UpdateStatus($_GET['activation_key']);
+
+                    $_SESSION['Login_ID'] = Users::getUser_eMail_Where('Activation_Key', $_GET['activation_key'])[0]['eMail'];
+
+
+                    View::renderTemplate('activation.html', $data);
+                }
+            }
         }
         else{
             $data = [
+                'language' => 'en',
                 'auth' => "You aren't auth",
                 'message' => "Your account isn't activated",
             ];
@@ -173,7 +195,6 @@ class Auth extends Controller
                     move_uploaded_file($_FILES['File']['tmp_name'], $upload_file);
                 }
 
-//                $dataType = $_POST["dataType"];
 
                 $Activation_URL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]/activate?" . "activation_key=" . md5($_POST['eMail']);
                 $mail = new PHPMailer(true);
@@ -184,12 +205,13 @@ class Auth extends Controller
                     $mail->isSMTP();                                      // Set mailer to use SMTP
                     $mail->Host = 'smtp.gmail.com';                       // Specify main and backup SMTP servers
                     $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                    $mail->SMTPSecure = 'ssl';                            // secure transfer enabled REQUIRED for GMail
+                    $mail->Port = 465;                                    // TCP port to connect to
                     $mail->Username = 'User_Name@gmail.com';              // SMTP username
                     $mail->Password = 'Password';                         // SMTP password
-                    $mail->Port = 465;                                    // TCP port to connect to
 
                     //Recipients
-                    $mail->setFrom('Userr_Name@gmail.com', 'Admin');
+                    $mail->setFrom('User_Name@gmail.com', 'Admin');
                     $mail->addAddress($_POST['eMail']);                   // Name is optional
 
                     //Content
