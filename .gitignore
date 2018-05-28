@@ -31,3 +31,4 @@ vendor
 
 # Configuration
 .env*
+App/Config.php
