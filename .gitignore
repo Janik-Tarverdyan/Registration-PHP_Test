@@ -32,3 +32,6 @@ composer.lock
 
 # Configuration
 .env*
+
+# Storeg
+./public/upload/*
